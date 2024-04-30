@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AdvUtilisateur index{% endblock %}
+
+{% block body %}
+    <h1>AdvUtilisateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telephone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for adv_utilisateur in adv_utilisateurs %}
+            <tr>
+                <td>{{ adv_utilisateur.id }}</td>
+                <td>{{ adv_utilisateur.email }}</td>
+                <td>{{ adv_utilisateur.roles ? adv_utilisateur.roles|json_encode : '' }}</td>
+                <td>{{ adv_utilisateur.password }}</td>
+                <td>{{ adv_utilisateur.nom }}</td>
+                <td>{{ adv_utilisateur.prenom }}</td>
+                <td>{{ adv_utilisateur.telephone }}</td>
+                <td>
+                    <a href="{{ path('app_adv_utilisateur_show', {'id': adv_utilisateur.id}) }}">show</a>
+                    <a href="{{ path('app_adv_utilisateur_edit', {'id': adv_utilisateur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_adv_utilisateur_new') }}">Create new</a>
+{% endblock %}

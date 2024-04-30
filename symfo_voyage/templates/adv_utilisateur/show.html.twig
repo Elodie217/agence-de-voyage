@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AdvUtilisateur{% endblock %}
+
+{% block body %}
+    <h1>AdvUtilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ adv_utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ adv_utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ adv_utilisateur.roles ? adv_utilisateur.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ adv_utilisateur.password }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ adv_utilisateur.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ adv_utilisateur.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <td>{{ adv_utilisateur.telephone }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_adv_utilisateur_index') }}">back to list</a>
+
+    <a href="{{ path('app_adv_utilisateur_edit', {'id': adv_utilisateur.id}) }}">edit</a>
+
+    {{ include('adv_utilisateur/_delete_form.html.twig') }}
+{% endblock %}
