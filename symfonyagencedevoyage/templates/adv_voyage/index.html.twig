@@ -1,0 +1,269 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Voyages{% endblock %}
+
+{% block body %}
+
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+
+{% include('includes/tableauDeBord.html.twig') %}
+
+
+    <div class='flex justify-between items-center'>
+            <h1 class=' m-6 text-3xl font-bold'>Tous les voyages</h1>
+            <a href="{{ path('app_adv_voyage_new') }}" class='block text-white py-1.5 px-4 mr-2 h-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg'>Ajouter un voyage</a>
+    </div>
+
+
+        <label class="relative inline-flex cursor-pointer items-center ml-6">
+            <input id="switch" type="checkbox" class="peer sr-only" />
+            <label for="switch" class="hidden"></label>
+            <div class="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#082A33] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+            <p class=' ml-2'>Mes voyages</p>
+        </label>
+
+
+    <div class="relative pt-2 lg:pt-2 min-h-screen">
+
+        <div class="bg-cover w-full flex justify-center items-center"
+            style="background-image: url('/images/mybackground.jpeg');">
+            <div class="w-full backdrop-filter backdrop-blur-lg">
+                <div class="w-12/12 mx-auto rounded-2xl  p-5 backdrop-filter backdrop-blur-lg">
+
+                    <div class="divCartes grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-2 mx-auto">
+                        {% for adv_voyage in adv_voyages %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                            {# ici c'est l'admin #}
+                                <article
+                                    class="bg-white  p-6 mb-6 shadow transition duration-300 group transform hover:-translate-y-2 hover:shadow-2xl rounded-2xl cursor-pointer border">
+                                    <a  href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" 
+                                        class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a>
+                                    <div class="relative mb-4 rounded-2xl">
+                                        <img class="max-h-44 rounded-2xl w-full object-cover transition-transform duration-300 transform group-hover:scale-105"
+                                            src={{ adv_voyage.imageVoyage }} alt="">
+                                        <div
+                                            class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
+
+                                            <i class="fa-regular fa-calendar"></i>
+                                            <span class="ml-1 text-sm">{{ adv_voyage.dureeVoyage }} jours</span>
+
+                                        </div>
+
+                                        <a class="flex justify-center items-center bg-[#FF9029] bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
+                                            href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" rel="noopener noreferrer">
+                                            Modifier le voyage
+                                            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <div class="flex w-full pb-4 mb-auto">
+                                        <p class=" font-bold text-xl group-hover:text-[#FF9029] transition-colors duration-200 ">{{ adv_voyage.destinationVoyage }}</p>
+                                    
+                                    </div>
+                                    
+                                        <p class=' text-justify mb-4 text-base' >{{ adv_voyage.descriptionVoyage }}</p>
+                                    <div class=' flex justify-between items-end'>
+                                        <div class='max-w-[50%]'>
+                                            
+                                            <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-left w-fit'>
+                                                {% for pays in adv_voyage.pays %}
+                                                        {{ pays.nomPays }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                        <div class='max-w-[50%]'>
+                                            
+                                            <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-right w-fit'>
+                                                {% for categorie in adv_voyage.categorie %}
+                                                        {{ categorie.nomCategorie }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+
+                            {% else %}
+                            {# ici c'est l'editeur #}
+                                {% if adv_voyage.user.id == user.id %}
+                                <article
+                                    class="bg-white  p-6 mb-6 shadow transition duration-300 group transform hover:-translate-y-2 hover:shadow-2xl rounded-2xl cursor-pointer border">
+                                    <a  href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" 
+                                        class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a>
+                                    <div class="relative mb-4 rounded-2xl">
+                                        <img class="max-h-44 rounded-2xl w-full object-cover transition-transform duration-300 transform group-hover:scale-105"
+                                            src={{ adv_voyage.imageVoyage }} alt="">
+                                        <div
+                                            class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
+
+                                            <i class="fa-regular fa-calendar"></i>
+                                            <span class="ml-1 text-sm">{{ adv_voyage.dureeVoyage }} jours</span>
+
+                                        </div>
+
+                                        <a class="flex justify-center items-center bg-[#FF9029] bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
+                                            href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" rel="noopener noreferrer">
+                                            Modifier le voyage
+                                            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <div class="flex w-full pb-4 mb-auto">
+                                        <p class=" font-bold text-xl group-hover:text-[#FF9029] transition-colors duration-200 ">{{ adv_voyage.destinationVoyage }}</p>
+                                    
+                                    </div>
+                                    
+                                        <p class=' text-justify mb-4 text-base' >{{ adv_voyage.descriptionVoyage }}</p>
+                                    <div class=' flex justify-between items-end'>
+                                        <div class='max-w-[50%]'>
+                                            
+                                            <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-left w-fit'>
+                                                {% for pays in adv_voyage.pays %}
+                                                        {{ pays.nomPays }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                        <div class='max-w-[50%]'>
+                                            
+                                            <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-right w-fit'>
+                                                {% for categorie in adv_voyage.categorie %}
+                                                        {{ categorie.nomCategorie }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+                                {% else %}
+                                    <article
+                                        class="bg-white  p-6 mb-6 shadow group rounded-2xl  border">
+                                        <div class="relative mb-4 rounded-2xl">
+                                            <img class="max-h-44 rounded-2xl w-full object-cover "
+                                                src={{ adv_voyage.imageVoyage }} alt="">
+                                            <div
+                                                class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
+
+                                                <i class="fa-regular fa-calendar"></i>
+                                                <span class="ml-1 text-sm">{{ adv_voyage.dureeVoyage }} jours</span>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="flex w-full pb-4 mb-auto">
+                                            <p class=" font-bold text-xl ">{{ adv_voyage.destinationVoyage }}</p>
+                                        
+                                        </div>
+                                        
+                                            <p class=' text-justify mb-4 text-base' >{{ adv_voyage.descriptionVoyage }}</p>
+                                        <div class=' flex justify-between items-end'>
+                                            <div class='max-w-[50%]'>
+                                                
+                                                <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-left w-fit'>
+                                                    {% for pays in adv_voyage.pays %}
+                                                            {{ pays.nomPays }}{% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                            </div>
+                                            <div class='max-w-[50%]'>
+                                                
+                                                <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-right w-fit'>
+                                                    {% for categorie in adv_voyage.categorie %}
+                                                            {{ categorie.nomCategorie }}{% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+                            
+                                {% endif %}
+                            
+                            {% endif %}
+   
+                        {% endfor %}
+                    </div>  
+                    <div class="divMesCartes hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-2 mx-auto">
+                    {# ici c'est pour afficher uniquement mes voyages #}
+                        {% for adv_voyage in adv_voyages %}
+                            {% if adv_voyage.user.id == user.id %}
+                                <article class="bg-white  p-6 mb-6 shadow transition duration-300 group transform hover:-translate-y-2 hover:shadow-2xl rounded-2xl cursor-pointer border">
+                                <a href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" 
+                                class="absolute opacity-0 top-0 right-0 left-0 bottom-0"></a>
+                                <div class="relative mb-4 rounded-2xl">
+                                    <img class="max-h-44 rounded-2xl w-full object-cover transition-transform duration-300 transform group-hover:scale-105" src={{ adv_voyage.imageVoyage }} alt="">
+                                    <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
+                                        <i class="fa-regular fa-calendar"></i>
+                                            <span class="ml-1 text-sm">{{ adv_voyage.dureeVoyage }} jours</span>
+                                    </div>
+                                    <a class="flex justify-center items-center bg-[#FF9029] bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100" href="{{ path('app_adv_voyage_edit', {'id': adv_voyage.id}) }}" target="_self" rel="noopener noreferrer"> Modifier le voyage 
+                                        <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="flex w-full pb-4 mb-auto">
+                                    <p class=" font-bold text-xl group-hover:text-[#FF9029] transition-colors duration-200 ">{{ adv_voyage.destinationVoyage }}</p>
+                                                            
+                                </div>
+                                                            
+                                <p class=' text-justify mb-4 text-base' >{{ adv_voyage.descriptionVoyage }}</p>
+                                <div class=' flex justify-between items-end'>
+                                    <div class='max-w-[50%]'>
+                                        <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-left w-fit'>
+                                            {% for pays in adv_voyage.pays %}
+                                                    {{ pays.nomPays }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                    <div class='max-w-[50%]'>
+                                        <p class='flex flex-wrap rounded-lg bg-white p-2 my-1 shadow-md text-right w-fit'>
+                                            {% for categorie in adv_voyage.categorie %}
+                                                {{ categorie.nomCategorie }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                </div>
+                                </article>
+                            {% endif %}
+                        {% endfor %}
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+</div>
+
+{% else %}
+    {% set targetPath = path('app_login') %}
+
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+
+{% endif %}
+
+<script>
+let btnSwitch = document.querySelector('#switch')
+btnSwitch.addEventListener("click", () => {
+  if (btnSwitch.checked){
+    document.querySelector('.divCartes').classList.add('hidden');
+    document.querySelector('.divMesCartes').classList.remove('hidden');
+    
+  } else {
+    document.querySelector('.divCartes').classList.remove('hidden');
+    document.querySelector('.divMesCartes').classList.add('hidden');
+  }
+});
+
+</script>
+
+{% endblock %}
+

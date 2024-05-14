@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+{# <form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form> #}
+
+
+
+<div class="bg-[#FFFAFF] flex justify-center items-center h-screen">
+    <!-- Left: Image -->
+<div class="w-1/2 h-screen hidden lg:block">
+  <img src="https://images.pexels.com/photos/601174/pexels-photo-601174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Couché de soleil" class="object-cover w-full h-full">
+</div>
+<div class="lg:px-32 md:px-48 sm:px-20 px-8 w-full lg:w-1/2">
+  
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <h1 class="text-2xl font-semibold mb-5">Inscription</h1>
+        <form method="POST">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+       
+        <div class="mb-5"> 
+            <label for="inputEmail" class='mb-3 block text-base font-medium text-[#07074D]"'>Email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-black outline-none focus:border-[#FF9029] focus:shadow-md" autocomplete="email" required autofocus>
+        </div>
+
+         
+        <div class="mb-5">
+            <label for="inputPassword" class='mb-3 block text-base font-medium text-[#07074D]"'>Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-black outline-none focus:border-[#FF9029] focus:shadow-md" autocomplete="current-password" required>
+            
+
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+        >
+
+        <button class="bg-[#FF9029] hover:bg-[#FF7B00] text-white font-semibold rounded-md py-2 px-4 w-full" type="submit">
+            Se connecter
+        </button>
+
+        </form>
+    </div>
+</div>
+
+ 
+</div>
+</div>
+
+
+{% endblock %}

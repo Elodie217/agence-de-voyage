@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_ADMIN') %}
+
+    {% include('includes/tableauDeBord.html.twig') %}
+
+    <div class='flex justify-between items-center'>
+        <h1 class=' m-6 text-3xl font-bold'>Toutes les réservations</h1>
+    </div>
+
+
+<div class="overflow-x-auto bg-">
+
+  <table  class="min-w-full max-w-5xl text-left text-base whitespace-nowrap">
+
+    <thead class="uppercase tracking-wider border-b-2">
+      <tr>
+        <th scope="col" class="px-6 py-4">
+          Id
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Utilisateur
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Voyage
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Message
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Statut
+        </th>
+        <th scope="col" class="px-6 py-4">
+        </th>
+      </tr>
+    </thead>
+
+    <!-- Table body -->
+    <tbody>
+  
+    {% for adv_reservation in adv_reservations %}
+      <tr class="border-b hover:bg-neutral-100">
+        <td class="px-6 py-4">{{ adv_reservation.id }}</td>
+        <td class="px-6 py-4">
+        {% if adv_reservation.user %}
+        {{ adv_reservation.user.nomUtilisateur }} {{ adv_reservation.user.prenomUtilisateur }}
+        {% endif %}
+        </td>
+        
+        <td class="px-6 py-4 text-wrap">
+        {% if adv_reservation.advVoyage %}
+        {{ adv_reservation.advVoyage.destinationVoyage }}
+        
+        </td>
+        {% endif %}
+
+        <td class="px-6 py-4 text-wrap">{{ adv_reservation.messageReservation }}</td>
+        <td class="px-6 py-4">
+        {% if adv_reservation.statut %}
+        
+          {% if adv_reservation.statut.id == 1 %}
+            <span class='inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-blue-500 bg-blue-100/60'><i class="fa-solid fa-envelope-circle-check mr-1"></i> {{ adv_reservation.statut.statut }}</span>
+          {% elseif  adv_reservation.statut.id == 2 %}
+            <span class='inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-gray-500 bg-gray-100/60'><i class="fa-solid fa-spinner mr-1"></i> {{ adv_reservation.statut.statut }}</span>
+          {% elseif  adv_reservation.statut.id == 3 %}
+            <span class='inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-red-500 bg-red-100/60'><i class="fa-solid fa-circle-xmark mr-1"></i> {{ adv_reservation.statut.statut }}</span>
+          {% elseif  adv_reservation.statut.id == 4 %}
+            <span class='inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60'><i class="fa-regular fa-circle-check mr-1"></i> {{ adv_reservation.statut.statut }}</span>
+          {% endif %}
+        
+
+        {% endif %}
+        </td>
+        <td class="px-6 py-4 flex ">
+            <button onClick=popUp({{adv_reservation.statut.id}}) class='text-[#FF9029] mr-4 transition duration-200 hover:text-[#FF7B00]'>Modifier</button>
+            {{ include('adv_reservation/_delete_form.html.twig') }}
+        </td>
+      </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="8">Aucune réservation trouvée</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+  </table>
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+<section class='popUpSection hidden fixed bg-white z-10 top-[35%] md:left-[30%] sm:left-[5%]  mx-8 p-10 text-lg rounded-xl shadow-2xl'>
+  
+</section>
+
+
+
+<script>
+function popUp(idStatutResa) {
+  document.querySelector(".popUpSection").classList.remove('hidden')
+  document.querySelector(".flou").classList.remove('hidden')
+
+  document.querySelector(".popUpSection").innerHTML=`
+  <div class='relative text-xl font-bold'>Voulez-vous changer le statut de ce message ?</div>
+
+  <button onClick=fermerPopUp() class=' text-2xl absolute top-[10px] right-[15px]'>  
+    <i class="fa-regular fa-circle-xmark"></i>
+  </button>
+  
+  <form action="{{path('app_adv_reservation_editStatut')}}" class='flex flex-col items-center' method='POST'>
+    <select name="`+idStatutResa+`statut" id="" class='my-6'> 
+      {% for statut in statut %}
+        <option value={{statut.id}} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-black outline-none focus:border-[#FF9029] focus:shadow-md" ` + statutSelected({{statut.id}}, idStatutResa) + `>{{statut.statut}}</option>
+      {% endfor %}
+    </select>
+    <button type='submit' class='block text-white py-1.5 px-4 mr-2 h-fit w-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg'>Enregistrer</button>
+  </form>`
+}
+
+function statutSelected(idStatut, idStatutResa) {
+  console.log(idStatut, idStatutResa);
+  if (idStatut == idStatutResa){
+    console.log('dans le if');
+    return 'selected'
+  }
+  
+}
+
+function fermerPopUp(params) {
+  document.querySelector(".popUpSection").classList.add('hidden')
+  document.querySelector(".flou").classList.add('hidden')
+
+}
+
+</script>
+{% endif %}
+{% endblock %}
+

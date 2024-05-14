@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau voyage{% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+
+    {% include('includes/tableauDeBord.html.twig') %}
+
+{# 082A33 #}
+
+    <div class='flex justify-between items-center'>
+        <h1 class=' m-6 text-3xl font-bold'>Créer un nouveau voyage</h1>
+        <a href="{{ path('app_adv_voyage_index') }}" class='block text-white py-1.5 px-4 mr-2 h-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg'>Retour aux voyages</a>
+    </div>
+
+{{ form_start(form) }}
+<div class="flex items-center justify-center p-12">
+    <div class="mx-auto w-full max-w-[550px]">
+        <div class="mb-5">
+            
+            <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+            {{form_label(form.destination_voyage) }}
+            </label>
+                {{ form_row(form.destination_voyage, {'label': false}) }}
+
+        </div>
+        <div class="-mx-3 flex flex-wrap">
+            <div class="w-full px-3 sm:w-1/2">
+            <div class="mb-5">
+                <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+                {{form_label(form.pays) }}
+                </label>
+                {{ form_row(form.pays, {'label': false}) }}
+            </div>
+            </div>
+            <div class="w-full px-3 sm:w-1/2">
+            <div class="mb-5">
+                <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+                {{form_label(form.categorie) }}
+                </label>
+                
+                {{ form_row(form.categorie, {'label': false}) }}
+            </div>
+            </div>
+        </div>
+        
+       <div class="-mx-3 flex flex-wrap">
+            <div class="w-full px-3 sm:w-1/2">
+                <div class="mb-5">
+                    <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+                    {{form_label(form.duree_voyage) }}
+                    </label>
+                    <div class='flex items-center'>
+                    {{ form_row(form.duree_voyage, {'label': false}) }}
+                    <p class=' mx-4 text-xl'>jours</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="-mx-3 flex flex-wrap">
+            <div class="w-full px-3 sm:w-1/2">
+                <div class="mb-5">
+                    <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+                    {{form_label(form.image_voyage) }}
+                    </label>
+                    
+                    {{ form_row(form.image_voyage, {'label': false}) }}
+                
+                </div>
+            </div>
+            <div class="w-full px-3 sm:w-1/2">
+                <div class="mb-5">
+                    <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+                    {{form_label(form.imagebis_voyage) }}
+                    </label>
+                    
+                    {{ form_row(form.imagebis_voyage, {'label': false}) }}
+                
+                </div>
+            </div>
+        </div>
+        <div class="mb-5">
+            
+            <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
+            {{form_label(form.description_voyage) }}
+            </label>
+                {{ form_row(form.description_voyage, {'label': false}) }}
+
+        </div>
+
+        <button class="block text-white py-1.5 px-4 mr-2 h-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+{% if is_granted('ROLE_ADMIN') %}
+
+
+{% include('includes/tableauDeBord.html.twig') %}
+
+    <div class='flex justify-between items-center'>
+        <h1 class=' m-6 text-3xl font-bold'>Tous les utilisateurs</h1>
+        <a href="{{ path('app_user_new') }}" class='block text-white py-1.5 px-4 mr-2 h-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg'>Ajouter un utilisateur</a>
+    </div>
+
+
+<div class="overflow-x-auto">
+
+  <table class="min-w-full text-left text-base whitespace-nowrap ">
+
+    <thead class="uppercase tracking-wider border-b-2">
+      <tr>
+        <th scope="col" class="px-6 py-4">
+          Id
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Nom
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Prénom
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Email
+        </th>
+         <th scope="col" class="px-6 py-4">
+          Téléphone
+        </th>
+        <th scope="col" class="px-6 py-4">
+          Role
+        </th>
+         <th scope="col" class="px-6 py-4">
+        </th>
+      </tr>
+    </thead>
+
+    <!-- Table body -->
+    <tbody>
+    {% for user in users %}
+      <tr class="border-b hover:bg-neutral-100">
+        <td class="px-6 py-4">{{ user.id }}</td>
+        <td class="px-6 py-4">{{ user.nomUtilisateur }}</td>
+        <td class="px-6 py-4">{{ user.prenomUtilisateur }}</td>
+        <td class="px-6 py-4">{{ user.email }}</td>
+        <td class="px-6 py-4">{{ user.telephoneUtilisateur }}</td>
+        <td class="px-6 py-4 text-wrap">{{ user.roles ? user.roles|json_encode : '' }}</td>
+        <td class="px-6 py-4 flex flex-col">
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class='text-[#FF9029] mr-4 transition duration-200 hover:text-[#FF7B00]'>Modifier</a>
+            {{ include('user/_delete_form.html.twig') }}
+        </td>
+      </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+  </table>
+
+</div>
+
+
+</div>
+</div>
+</div>
+
+{% else %}
+    {# <a class="link" href="{{ path('login') }}">Login</a> #}
+    {% set targetPath = path('app_adv_voyage_index') %}
+
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+
+{% endif %}
+
+{% endblock %}

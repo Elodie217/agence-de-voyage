@@ -1,0 +1,15 @@
+{% if app.request.pathinfo == path('app_user_index') %}
+<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+    <button class="text-red-500 transition duration-200 hover:text-red-600">Supprimer</button>
+</form>
+
+{% else %}
+
+
+<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+    <button class="block text-white py-1.5 px-4 mr-2 h-fit rounded transition duration-200 bg-red-500 hover:bg-red-600 text-lg">Supprimer</button>
+</form>
+
+{% endif %}
