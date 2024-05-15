@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AdvPaysRepository::class)]
 #[ORM\UniqueConstraint(fields: ['nom_pays'])]
@@ -21,6 +23,8 @@ class AdvPays
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255, maxMessage: "Le pays ne peut pas avoir plus de 255 caractères.")]
+    #[Assert\NotBlank(message: "Le pays ne peux pas rester vide.")]
     #[Groups(['api_voyage_index', 'api_pays_index'])]
     private ?string $nom_pays = null;
 

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau voyage{% endblock %}
+{% block title %}Voyage{% endblock %}
 
 {% block body %}
 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
@@ -25,11 +25,26 @@
                 {{ form_row(form.destination_voyage, {'label': false}) }}
 
         </div>
+
+        {% for message in app.flashes('success') %}
+            <div class='text-green-500' >
+                {{message | join('<br>')}}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class='text-red-500' >
+                {{message | join('<br>')}}
+            </div>
+        {% endfor %}
+
         <div class="-mx-3 flex flex-wrap">
             <div class="w-full px-3 sm:w-1/2">
             <div class="mb-5">
                 <label class='mb-3 block text-base font-medium text-[#07074D]"'>                
-                {{form_label(form.pays) }}
+                {{form_label(form.pays) }} 
+                    <button onClick='newPays()'>
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </button>
                 </label>
                 {{ form_row(form.pays, {'label': false}) }}
             </div>
@@ -97,4 +112,36 @@
 
 {{ form_end(form) }}
 {% endif %}
+
+<section class=' newPays hidden fixed bg-white z-10 w-fit m-auto top-[28%] md:left-[38%] left-[10%]   mx-8 p-10 text-lg rounded-xl shadow-2xl'>
+    <div class='relative text-xl font-bold mb-4'>Voulez-vous ajouter un pays ?</div>
+
+  <button onClick=fermerPopUpPays() class=' text-2xl absolute top-[10px] right-[15px]'>  
+    <i class="fa-regular fa-circle-xmark"></i>
+  </button>
+  
+  <form action="{{path('app_adv_pays_new')}}" class='flex flex-col' method='POST'>
+    <label for="pays">Pays :</label>
+    <input type="text" name='pays' id='pays' class='w-full appearance-none rounded-md border border-[#e0e0e0] bg-white my-4 py-2 px-4 text-base  text-black outline-none focus:border-[#FF9029] focus:shadow-md'>
+    <div id="error-messages" class="hidden text-red-500"></div>
+    <button type='submit' class='block text-white py-1.5 px-4 mr-2 mt-4 h-fit w-fit rounded transition duration-200 bg-[#FF9029] hover:bg-[#FF7B00] text-lg'>Enregistrer</button>
+  </form>
+</section>
+
+<script>
+function newPays() {
+    document.querySelector(".newPays").classList.remove('hidden')
+    document.querySelector(".flou").classList.remove('hidden')
+}
+
+function fermerPopUpPays() {
+    document.querySelector(".newPays").classList.add('hidden')
+    document.querySelector(".flou").classList.add('hidden')
+}
+
+
+
+</script>
+
+
 {% endblock %}

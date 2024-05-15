@@ -36,10 +36,10 @@ class ReservationController extends AbstractController
         } else {
             // ici l'uilisateur n'existe pas, alors on le créer
             $user = new User;
-            $user->setEmail($reservationUser['email']);
-            $user->setNomUtilisateur($reservationUser['nom_utilisateur']);
-            $user->setPrenomUtilisateur($reservationUser['prenom_utilisateur']);
-            $user->setTelephoneUtilisateur($reservationUser['tel_utilisateur']);
+            $user->setEmail(htmlspecialchars($reservationUser['email']));
+            $user->setNomUtilisateur(htmlspecialchars($reservationUser['nom_utilisateur']));
+            $user->setPrenomUtilisateur(htmlspecialchars($reservationUser['prenom_utilisateur']));
+            $user->setTelephoneUtilisateur(htmlspecialchars($reservationUser['tel_utilisateur']));
 
 
             $errors = $validatorInterface->validate($user);
@@ -59,13 +59,13 @@ class ReservationController extends AbstractController
             }
         };
 
-        $voyage = $advVoyageRepository->findOneBy(["id" => $reservationUser['adv_voyage_id']]);
+        $voyage = $advVoyageRepository->findOneBy(["id" => htmlspecialchars($reservationUser['adv_voyage_id'])]);
         $statut = $advStatutRepository->findOneBy(["id" => 1]);
 
         $reservation = new AdvReservation;
         $reservation->setUser($user);
         $reservation->setAdvVoyage($voyage);
-        $reservation->setMessageReservation($reservationUser['message_reservation']);
+        $reservation->setMessageReservation(htmlspecialchars($reservationUser['message_reservation']));
         $reservation->setStatut($statut);
 
 

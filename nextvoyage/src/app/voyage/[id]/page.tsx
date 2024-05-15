@@ -30,7 +30,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   return (
     <main className=" text-lg">
-      {/* <div>My id: {params.id}</div> */}
       <section className="h-screen">
         <Nav></Nav>
 
@@ -38,10 +37,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           className="flex flex-col items-center h-full pt-20 bg-cover bg-center"
           style={{ backgroundImage: `url(${voyage?.image_voyage})` }}
         >
-          <h1
-            className=" pt-[30vh] text-center text-6xl font-semibold text-bleufonce mx-40 "
-            // style={{ textShadow: "0px 0px 20px white" }}
-          >
+          <h1 className=" pt-[30vh] text-center text-6xl font-semibold text-bleufonce mx-40 ">
             <div className="bg-[#ffffffa3] p-2 rounded-lg">
               <span>{voyage?.destination_voyage}</span>
             </div>
