@@ -56,6 +56,8 @@ class UserType extends AbstractType
             ])
                 ->add('password', PasswordType::class, [
                     'label' => 'Mot de passe',
+                    'required' => false,
+                    'empty_data' => '',
                     'attr' => ['class' => "w-full appearance-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-black outline-none focus:border-[#FF9029] focus:shadow-md", 'placeholder' => "*****"]
                 ]);
         };

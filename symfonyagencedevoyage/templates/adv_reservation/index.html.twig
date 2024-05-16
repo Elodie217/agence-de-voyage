@@ -8,7 +8,7 @@
     {% include('includes/tableauDeBord.html.twig') %}
 
     <div class='flex justify-between items-center'>
-        <h1 class=' m-6 text-3xl font-bold'>Toutes les réservations</h1>
+           <h1 class=' m-6 text-3xl font-bold'>Toutes les réservations</h1>
     </div>
 
 
@@ -75,22 +75,21 @@
         {% endif %}
         </td>
         <td class="px-6 py-4 flex ">
-            <button onClick=popUp({{adv_reservation.statut.id}}) class='text-[#FF9029] mr-4 transition duration-200 hover:text-[#FF7B00]'>Modifier</button>
+            <button onClick=popUp({{adv_reservation.id}}, {{adv_reservation.statut.id}}) class='text-[#FF9029] mr-4 transition duration-200 hover:text-[#FF7B00]'>Modifier</button>
             {{ include('adv_reservation/_delete_form.html.twig') }}
         </td>
       </tr>
 
+        {% endfor %}
         {% else %}
             <tr>
                 <td colspan="8">Aucune réservation trouvée</td>
             </tr>
-        {% endfor %}
     </tbody>
 
   </table>
 
 </div>
-
 
 
 </div>
@@ -103,7 +102,10 @@
 
 
 <script>
-function popUp(idStatutResa) {
+
+
+function popUp(idResa, idStatutResa) {
+  console.log(idStatutResa);
   document.querySelector(".popUpSection").classList.remove('hidden')
   document.querySelector(".flou").classList.remove('hidden')
 
@@ -115,7 +117,7 @@ function popUp(idStatutResa) {
   </button>
   
   <form action="{{path('app_adv_reservation_editStatut')}}" class='flex flex-col items-center' method='POST'>
-    <select name="`+idStatutResa+`statut" id="" class='my-6'> 
+    <select name="`+idResa+`statut" id="" class='my-6'> 
       {% for statut in statut %}
         <option value={{statut.id}} class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-black outline-none focus:border-[#FF9029] focus:shadow-md" ` + statutSelected({{statut.id}}, idStatutResa) + `>{{statut.statut}}</option>
       {% endfor %}
@@ -125,15 +127,13 @@ function popUp(idStatutResa) {
 }
 
 function statutSelected(idStatut, idStatutResa) {
-  console.log(idStatut, idStatutResa);
   if (idStatut == idStatutResa){
-    console.log('dans le if');
     return 'selected'
   }
   
 }
 
-function fermerPopUp(params) {
+function fermerPopUp() {
   document.querySelector(".popUpSection").classList.add('hidden')
   document.querySelector(".flou").classList.add('hidden')
 
